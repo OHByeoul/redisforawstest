@@ -14,6 +14,6 @@ public class RedisController {
     @GetMapping("/")
     public String test() {
         redisService.redisString();
-        return "tttttestt";
+        return "tttttestt2";
     }
 }
