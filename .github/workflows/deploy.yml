@@ -36,6 +36,10 @@ jobs:
       - name: 빌드
         run: ./gradlew build
 
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
+
       - name: aws 세팅
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -44,7 +48,8 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: S3 업로드
-        run: aws deploy push --application-name study-app-codedeploy-server --description "study-app server" --s3-location s3://study-codedeploy/server/build.zip --source .
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://deploybuckettt/$PROJECT_NAME/$GITHUB_SHA.zip
+        #run: aws deploy push --application-name test --description "test" --s3-location s3://deploybuckettt/server/build.zip --source .
 
       - name: code deploy
-        run: aws deploy create-deployment --application-name study-app-codedeploy-server --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=study-codedeploy,bundleType=zip,key=server/build.zip
+        run: aws deploy create-deployment --application-name test --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name dev --s3-location bucket=buckettt,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
