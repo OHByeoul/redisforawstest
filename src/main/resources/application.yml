@@ -1,5 +1,5 @@
 spring:
   redis:
-    host: ignoretest
+    host: ignoretest222
     port: 6379
 
